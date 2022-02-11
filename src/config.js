@@ -1,3 +1,3 @@
 module.exports = {
-  url: 'https://gank.io',
+  url: 'http://www.kuaidi100.com',
 };

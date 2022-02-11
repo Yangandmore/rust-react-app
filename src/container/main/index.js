@@ -1,13 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import styles from './styles';
-import { mainAction, mainSelect } from '../../redux';
+import { Layout, Menu } from 'element-react';
+import { withRouter } from 'react-router-dom';
+import Header from '../header';
 
 class Main extends React.Component {
   static propTypes = {
-    dispatch: PropTypes.func.isRequired,
-    data: PropTypes.object.isRequired,
+    history: PropTypes.object.isRequired,
+    children: PropTypes.array.isRequired,
   };
 
   constructor(props) {
@@ -15,45 +15,61 @@ class Main extends React.Component {
     this.state = {};
   }
 
-  static getDerivedStateFromProps(nextProps, prevState) {
-    const res = {};
-    console.log('----->');
-    return res;
+  onSelect = (index, indexPath) => {
+    // TODO
+    switch (index) {
+      case '2-1':
+        this.props.history.push({
+          pathname: '/dict',
+        });
+        break;
+      default:
+    }
   }
-
-  apiTest = () => {
-    this.props.dispatch(mainAction.actionApiTest());
-  };
-
-  localTest = () => {
-    console.log('-----local');
-    this.props.dispatch(mainAction.actionLocalTest({ a: 1, b: 2 }));
-  };
 
   render() {
     return (
-      <div style={styles.content}>
-        主页面
-        <button
-          onClick={() => {
-            this.apiTest();
-          }}
-        >
-          网络接口请求
-        </button>
-        <button
-          onClick={() => {
-            this.localTest();
-          }}
-        >
-          本地redux
-        </button>
-      </div>
+      <Layout.Row>
+        <Layout.Col span={3}>
+          <div style={{ backgroundColor: '#324156' }}>
+            <Menu style={{ height: '100vh' }} defaultActive="2" theme="dark" onSelect={this.onSelect}>
+              <Menu.SubMenu
+                index="1"
+                title={(
+                  <span>
+                    <i className="el-icon-message" />
+                    基础设置
+                  </span>
+                )}
+              >
+                <Menu.ItemGroup title="用户管理">
+                  <Menu.Item index="1-1">账户管理</Menu.Item>
+                  <Menu.Item index="1-2">角色管理</Menu.Item>
+                  <Menu.Item index="1-3">权限管理</Menu.Item>
+                </Menu.ItemGroup>
+              </Menu.SubMenu>
+              <Menu.SubMenu
+                index="2"
+                title={(
+                  <span>
+                    <i className="el-icon-menu" />
+                    系统设置
+                  </span>
+                )}
+              >
+                <Menu.Item index="2-1">字典管理</Menu.Item>
+              </Menu.SubMenu>
+            </Menu>
+          </div>
+        </Layout.Col>
+        <Layout.Col span={21}>
+          <div>
+            <Header />
+            {this.props.children}
+          </div>
+        </Layout.Col>
+      </Layout.Row>
     );
   }
 }
-
-const mapStateToProps = (state) => ({
-  data: mainSelect.dataSelect(state),
-});
-export default connect(mapStateToProps)(Main);
+export default withRouter(Main);

@@ -6,13 +6,15 @@ import App from './routers';
 import reportWebVitals from './reportWebVitals';
 import { configureLocalStateStore } from './store';
 
+import 'element-theme-default';
+
 const app = async () => {
   const store = await configureLocalStateStore();
 
   ReactDOM.render(
-    <React.StrictMode>
-      <Provider store={store}>{App()}</Provider>
-    </React.StrictMode>,
+    //    <React.StrictMode>
+    <Provider store={store}>{App()}</Provider>, //    </React.StrictMode>,
+
     document.getElementById('root'),
   );
 

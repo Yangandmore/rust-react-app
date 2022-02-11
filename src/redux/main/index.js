@@ -15,6 +15,7 @@ const defaultState = fromJS({
 const prefix = 'MAIN';
 const LOCAL_TEST = `${prefix}_LOCAL_TEST`;
 const API_TEST = `${prefix}_API_TEST`;
+const LOGIN = `${prefix}_LOGIN`;
 
 const mainAction = {};
 mainAction.actionLocalTest = createAction(LOCAL_TEST, 'data');

@@ -1,10 +1,19 @@
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import { Main } from './container';
+import { Login, Main, Page } from './container';
 
 const App = () => (
   <BrowserRouter>
     <Switch>
-      <Route exact path="/" component={Main} />
+      <Route exact path="/login" component={Login} />
+      <Route
+        path="/"
+        render={() => (
+          <Main>
+            <Route exact path="/dict" component={Page.Dict} />
+            <Route exact path="/" component={Page.Home} />
+          </Main>
+        )}
+      />
     </Switch>
   </BrowserRouter>
 );
