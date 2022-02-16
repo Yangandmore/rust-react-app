@@ -4,26 +4,24 @@ import moment from 'moment';
 import { connect } from 'react-redux';
 import { Form, Input, Button, Select, DatePicker, Loading, Message, Pagination } from 'element-react';
 import { SearchInput, TableView, DialogView } from '../../../component';
-import { mainSelect, dictAction, dictSelect } from '../../../redux';
+import { mainSelect, roleAction, roleSelect } from '../../../redux';
 import { StringUtils } from '../../../utils';
 
-class Dict extends React.Component {
+class Role extends React.Component {
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
-    dictList: PropTypes.object.isRequired,
+    roleList: PropTypes.object.isRequired,
     fetch: PropTypes.bool,
     msg: PropTypes.string,
     err: PropTypes.string,
     pageHeight: PropTypes.number.isRequired,
-  };
+  }
 
   constructor(props) {
     super(props);
     this.state = {
       searchForm: {
         name: '',
-        code: '',
-        state: '',
         createDate: null,
       },
       isSearchForm: {},
@@ -34,15 +32,12 @@ class Dict extends React.Component {
       dialogTitle: '',
       dialogForm: {
         name: '',
-        code: '',
-        state: '',
       }
     };
   }
 
   componentDidMount() {
-    // 请求接口
-    this.listDict(this.state.currentPage);
+    this.listRole(this.state.currentPage);
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -76,59 +71,49 @@ class Dict extends React.Component {
     }));
   }
 
-  listDict = (pageIndex) => {
-    this.props.dispatch(dictAction.actionList({
+  listRole = (pageIndex) => {
+    this.props.dispatch(roleAction.actionList({
       page_index: pageIndex,
       page_count: this.state.pageCount,
       name: StringUtils.isEmpty(this.state.isSearchForm.name) ? null : this.state.isSearchForm.name,
-      code: StringUtils.isEmpty(this.state.isSearchForm.code) ? null : this.state.isSearchForm.code,
-      state: StringUtils.isEmpty(this.state.isSearchForm.state) ? null : parseInt(this.state.isSearchForm.state, 10),
     }));
   }
 
-  addDict = () => {
-    this.props.dispatch(dictAction.actionAdd({
+  addRole = () => {
+    this.props.dispatch(roleAction.actionAdd({
       name: this.state.dialogForm.name,
-      code: this.state.dialogForm.code,
-      state: parseInt(this.state.dialogForm.state, 10),
     }));
   }
 
-  updateDict = () => {
-    this.props.dispatch(dictAction.actionUpdate({
+  updateRole = () => {
+    this.props.dispatch(roleAction.actionUpdate({
       id: this.state.dialogForm.id,
       name: this.state.dialogForm.name,
-      code: this.state.dialogForm.code,
-      state: parseInt(this.state.dialogForm.state, 10),
     }));
   }
 
-  deleteDict = () => {
-    this.props.dispatch(dictAction.actionDelete({
+  deleteRole = () => {
+    this.props.dispatch(roleAction.actionDelete({
       id: this.state.dialogForm.id,
     }));
   }
 
   addClick = () => {
-    this.setState({ dialogTitle: '新增字典',
+    this.setState({ dialogTitle: '新增角色',
       addVisible: true,
       dialogForm: {
         name: '',
-        code: '',
-        state: '',
       }
     });
   }
 
   updateClick = (data) => {
     this.setState({
-      dialogTitle: '修改字典',
+      dialogTitle: '修改角色',
       addVisible: true,
       dialogForm: {
         id: data.id,
         name: data.name,
-        code: data.code,
-        state: `${data.state}`,
       }
     });
   }
@@ -143,7 +128,7 @@ class Dict extends React.Component {
   }
 
   render() {
-    console.log('----->', this.props.dictList);
+    console.log('----->', this.props.roleList);
     let height = 0;
     if (this.searchInput && this.addDiv && this.pagination) {
       height = this.props.pageHeight - this.searchInput.offsetHeight - this.addDiv.offsetHeight - this.pagination.offsetHeight - 16;
@@ -161,30 +146,17 @@ class Dict extends React.Component {
             form={this.state.searchForm}
             onSearch={() => {
               this.setState((prev) => ({ isSearchForm: { ...prev.searchForm }, currentPage: 1 }), () => {
-                this.listDict(1);
+                this.listRole(1);
               });
             }}
             onReset={() => {
-              this.setState({ searchForm: { name: '', code: '' }, isSearchForm: {}, currentPage: 1 }, () => {
-                this.listDict(1);
+              this.setState({ searchForm: { name: '' }, isSearchForm: {}, currentPage: 1 }, () => {
+                this.listRole(1);
               });
             }}
           >
             <Form.Item prop="name">
               <Input value={this.state.searchForm.name} placeholder="名称" onChange={(value) => { this.onChange('searchForm', 'name', value); }} />
-            </Form.Item>
-            <Form.Item prop="code">
-              <Input value={this.state.searchForm.code} placeholder="代码" onChange={(value) => { this.onChange('searchForm', 'code', value); }} />
-            </Form.Item>
-            <Form.Item prop="state">
-              <Select
-                value={this.state.searchForm.state}
-                placeholder="是否启用"
-                onChange={(value) => { this.onChange('searchForm', 'state', value); }}
-              >
-                <Select.Option label="启用" value="1" />
-                <Select.Option label="不启用" value="0" />
-              </Select>
             </Form.Item>
             <Form.Item prop="createDate">
               <DatePicker
@@ -210,18 +182,6 @@ class Dict extends React.Component {
               label: '名称',
               prop: 'name',
             }, {
-              label: '代码',
-              prop: 'code',
-            }, {
-              label: '启用',
-              prop: 'state',
-              render: (data) => {
-                if (data.state === 1) {
-                  return <span>是</span>;
-                }
-                return <span>否</span>;
-              }
-            }, {
               label: '创建日期',
               prop: 'create_date',
               render: (data) => <span>{moment(data.create_date).format('yyyy-MM-DD HH:mm:ss')}</span>
@@ -236,24 +196,24 @@ class Dict extends React.Component {
               )
             }
           ]}
-          data={this.props.dictList.records && this.props.dictList.records}
+          data={this.props.roleList.records && this.props.roleList.records}
           stripe
           border
         />
         <div ref={(refs) => { this.pagination = refs; }}>
           <Pagination
             layout="prev, pager, next"
-            total={this.props.dictList.total}
+            total={this.props.roleList.total}
             currentPage={this.state.currentPage}
-            onCurrentChange={(page) => { this.setState({ currentPage: page }, () => { this.listDict(page); }); }}
+            onCurrentChange={(page) => { this.setState({ currentPage: page }, () => { this.listRole(page); }); }}
           />
         </div>
         <DialogView
-          title="删除字典"
+          title="删除角色"
           visible={this.state.deleteVisible}
           size="tiny"
           onSubmit={() => {
-            this.deleteDict();
+            this.deleteRole();
           }}
           onCancel={() => this.setState({ deleteVisible: false })}
         >
@@ -265,11 +225,11 @@ class Dict extends React.Component {
           size="tiny"
           onSubmit={() => {
             switch (this.state.dialogTitle) {
-              case '新增字典':
-                this.addDict();
+              case '新增角色':
+                this.addRole();
                 break;
-              case '修改字典':
-                this.updateDict();
+              case '修改角色':
+                this.updateRole();
                 break;
               default:
             }
@@ -283,33 +243,17 @@ class Dict extends React.Component {
                 onChange={(value) => { this.onChange('dialogForm', 'name', value); }}
               />
             </Form.Item>
-            <Form.Item label="代码">
-              <Input
-                value={this.state.dialogForm.code}
-                onChange={(value) => { this.onChange('dialogForm', 'code', value); }}
-              />
-            </Form.Item>
-            <Form.Item label="是否启用">
-              <Select
-                value={this.state.dialogForm.state}
-                onChange={(value) => { this.onChange('dialogForm', 'state', value); }}
-              >
-                <Select.Option label="启用" value="1" />
-                <Select.Option label="不启用" value="0" />
-              </Select>
-            </Form.Item>
           </Form>
         </DialogView>
       </div>
     );
   }
 }
-
 const mapStateToProps = (state) => ({
-  dictList: dictSelect.listSelect(state),
-  fetch: dictSelect.dictFetch(state),
-  msg: dictSelect.dictMsg(state),
-  err: dictSelect.dictErr(state),
+  roleList: roleSelect.listSelect(state),
+  fetch: roleSelect.roleFetch(state),
+  msg: roleSelect.roleMsg(state),
+  err: roleSelect.roleErr(state),
   pageHeight: mainSelect.pageHeight(state),
 });
-export default connect(mapStateToProps)(Dict);
+export default connect(mapStateToProps)(Role);

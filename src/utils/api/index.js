@@ -32,8 +32,8 @@ const request = async (options, dispatch, getState) => {
   try {
     const res = await hrequest(opts);
 
-    const { errcode, errmsg } = res.body;
-    if (errcode && errcode !== 0) {
+    const { code } = res.body;
+    if (code === 'fail') {
       return Promise.reject(res);
     }
     return Promise.resolve(res);

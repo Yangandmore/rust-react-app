@@ -5,52 +5,30 @@ import {
 } from 'redux-act-reducer';
 import { fromJS } from 'immutable';
 import { createSelector } from 'reselect';
-import { testApi } from './api';
 
 const defaultState = fromJS({
-  data: {},
-  apiData: {},
+  pageHeight: 0,
 });
 
 const prefix = 'MAIN';
-const LOCAL_TEST = `${prefix}_LOCAL_TEST`;
-const API_TEST = `${prefix}_API_TEST`;
-const LOGIN = `${prefix}_LOGIN`;
+const PAGE_HEIGHT = `${prefix}_PAGE_HEIGHT`;
 
 const mainAction = {};
-mainAction.actionLocalTest = createAction(LOCAL_TEST, 'data');
-mainAction.actionApiTest = createActionAsync(API_TEST, testApi);
+mainAction.actionPageHeight = createAction(PAGE_HEIGHT, 'pageHeight');
 
 const mainReducer = createReducer(
   {
-    [LOCAL_TEST](state, action) {
-      return state.merge({
-        data: action.data,
-      });
-    },
-    [API_TEST](state, action) {
-      return {
-        REQUEST() {
-          return state;
-        },
-        SUCCESS() {
-          return state.merge({
-            apiData: action.res.body,
-          });
-        },
-        FAILURE() {
-          return state.merge({
-            apiData: fromJS({}),
-          });
-        },
-      };
-    },
+    [PAGE_HEIGHT](state, action) {
+      return state.merge(fromJS({
+        pageHeight: action.pageHeight
+      }));
+    }
   },
   defaultState,
 );
 
 const select = (state) => state.get('main');
 const mainSelect = {};
-mainSelect.dataSelect = createSelector(select, (state) => state.get('data'));
+mainSelect.pageHeight = createSelector(select, (state) => state.get('pageHeight'));
 
 export { mainAction, mainReducer, mainSelect };

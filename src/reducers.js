@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux-immutable';
-import { mainReducer } from './redux';
+import { mainReducer, dictReducer, roleReducer } from './redux';
 
-const rootReducer = combineReducers({ main: mainReducer });
+const rootReducer = combineReducers({ main: mainReducer, dict: dictReducer, role: roleReducer });
 
 export default rootReducer;

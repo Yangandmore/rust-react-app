@@ -1,3 +1,3 @@
 module.exports = {
-  url: 'http://www.kuaidi100.com',
+  url: 'http://localhost:8080',
 };

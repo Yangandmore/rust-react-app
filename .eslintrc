@@ -52,7 +52,9 @@
         "guard-for-in": 1,
         "react/react-in-jsx-scope": 0,
         "react/no-unused-state": 1,
-        "react/no-deprecated": 1
+        "react/no-deprecated": 1,
+        "react/jsx-props-no-spreading": 0,
+        "react/require-default-props": 0,
     },
     "globals": {
       "window": true

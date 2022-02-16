@@ -6,6 +6,14 @@ class Home extends React.Component {
     this.state = {};
   }
 
+  componentDidMount() {
+    console.log('-----> home cmd');
+  }
+
+  componentWillUnmount() {
+    console.log('-----> home unm');
+  }
+
   render() {
     return (<div>home</div>);
   }
