@@ -14,6 +14,8 @@ class App extends React.Component {
         return Page.Dict;
       case 'role':
         return Page.Role;
+      case 'menu':
+        return Page.Menu;
       default:
         return ErrorContainer;
     }
@@ -32,6 +34,7 @@ class App extends React.Component {
               <Main>
                 <Route exact path="/dict" component={Page.Dict} />
                 <Route exact path="/role" component={Page.Role} />
+                <Route exact path="/menu" component={Page.Menu} />
                 <Route exact path="/" component={Page.Home} />
               </Main>
             )}

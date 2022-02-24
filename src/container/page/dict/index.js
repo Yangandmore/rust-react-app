@@ -70,6 +70,12 @@ class Dict extends React.Component {
     return res;
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.fetch) {
+      this.listDict(1);
+    }
+  }
+
   onChange(data, key, value) {
     this.setState((prev) => ({
       [data]: { ...prev.[data], [key]: value }
@@ -257,7 +263,7 @@ class Dict extends React.Component {
           }}
           onCancel={() => this.setState({ deleteVisible: false })}
         >
-          <span>删除改项</span>
+          <span>删除该项</span>
         </DialogView>
         <DialogView
           title={this.state.dialogTitle}

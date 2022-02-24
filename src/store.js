@@ -12,7 +12,7 @@ let engine = createEngine('data');
 // 白名单
 // 黑名单
 // 多层数组表示嵌套
-engine = filter(engine, ['whitelisted-key', ['main'], ['dict'], ['role']], ['blacklisted-key', []]);
+engine = filter(engine, ['whitelisted-key', ['main'], ['dict'], ['role'], ['menu']], ['blacklisted-key', []]);
 
 const getLocalState = () => engine.load()
   .then((state) => state)

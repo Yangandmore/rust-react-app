@@ -41,6 +41,11 @@ class Main extends React.Component {
           pathname: '/role',
         });
         break;
+      case '1-3':
+        this.props.history.push({
+          pathname: '/menu',
+        });
+        break;
       default:
     }
   }
@@ -62,7 +67,7 @@ class Main extends React.Component {
               <Menu.ItemGroup title="用户管理">
                 <Menu.Item index="1-1">账户管理</Menu.Item>
                 <Menu.Item index="1-2">角色管理</Menu.Item>
-                <Menu.Item index="1-3">权限管理</Menu.Item>
+                <Menu.Item index="1-3">菜单管理</Menu.Item>
               </Menu.ItemGroup>
             </Menu.SubMenu>
             <Menu.SubMenu
